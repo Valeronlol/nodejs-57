@@ -3,15 +3,15 @@ require('dotenv').config({
     path: resolve(__dirname, '..', '.env')
 })
 const express = require('express')
-const { isNumber } = require('lodash')
-const { createServer } = require("http")
-const { Server } = require("socket.io")
+const { createServer } = require('http')
+const { Server } = require('socket.io')
+const handleError = require('./utils/global-error-handler')
 
 const app = express()
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-io.on("connection", (socket) => {
+io.on('connection', (socket) => {
   setInterval(() => {
     socket.send('HELLO', {test: 1})
   }, 4000)
@@ -28,14 +28,6 @@ app.use(express.json())
 app.use(express.static(join(__dirname, '../', 'public')))
 app.use('/', router)
 
-app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res
-        .status(isNumber(err.code) ? err.code : 500)
-        .send({
-            code: err.code || 500,
-            message: err.message,
-        })
-})
+app.use(handleError)
 
 httpServer.listen(port)

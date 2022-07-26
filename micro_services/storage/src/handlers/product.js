@@ -1,6 +1,7 @@
 const dbClient = require('../db-client')
 
 exports.getList = async (ctx) => {
+    throw new Error('Something happened! :(')
     ctx.body = await dbClient.product.findMany({
         take: 50
     })
