@@ -3,7 +3,12 @@ const appSubscriber = require('../utils/app-subriber')
 const { AppError } = require('../utils/app-errors')
 
 exports.getList = async (req, res) => {
-    const productList = await getProductsList({ limit: 10 })
+    req.logger.info('Controller getList called.')
+    const productList = await getProductsList({ limit: 10 }) || []
+    req.logger.info('productList received.')
+    if (!productList.length) {
+        req.logger.info('productList is empty!')
+    }
     res.send(productList)
 }
 
