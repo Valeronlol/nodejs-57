@@ -47,6 +47,7 @@ services:
       - gateway_logs:/var/log/gateway
     environment:
       PORT: 3000
+      STORAGE_URL: "http://storage:3000"
     ports:
       - "3000:3000"
     networks:
